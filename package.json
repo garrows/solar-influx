@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint",
+    "start": "node solar.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
