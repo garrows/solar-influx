@@ -45,6 +45,8 @@ async function getJwtToken() {
         return data;
     } catch (error) {
         console.error('Error fetching JWT token:', error);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // waits for 1 second
+        return await getJwtToken();
     }
 }
 
