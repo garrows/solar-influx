@@ -36,7 +36,7 @@ async function getJwtToken() {
             const body = await response.text();
             console.log(body);
             console.error(`HTTP error! Status: ${response.status}`);
-            await new Promise(resolve => setTimeout(resolve, 1000)); // waits for 1 second
+            await new Promise(resolve => setTimeout(resolve, 60000)); // waits for 60 seconds
             return await getJwtToken();
         }
 
@@ -45,7 +45,7 @@ async function getJwtToken() {
         return data;
     } catch (error) {
         console.error('Error fetching JWT token:', error);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // waits for 1 second
+        await new Promise(resolve => setTimeout(resolve, 60000)); // waits for 60 seconds
         return await getJwtToken();
     }
 }
@@ -71,7 +71,21 @@ async function getDataAPI(timestamp) {
     return data;
 }
 
+let mainRunning = false;
 async function main() {
+    if (mainRunning) {
+        console.log('Previous run still in progress, skipping');
+        return;
+    }
+    mainRunning = true;
+    try {
+        await runOnce();
+    } finally {
+        mainRunning = false;
+    }
+}
+
+async function runOnce() {
     let data;
     try {
         data = await getDataAPI();
@@ -108,4 +122,4 @@ async function main() {
 }
 jwt = await getJwtToken();
 await main();
-setInterval(main, 5000);
+setInterval(main, 60000);
